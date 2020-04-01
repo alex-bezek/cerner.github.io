@@ -1,10 +1,12 @@
 ---
 layout: post
-title: "One Year Calling Innovations Home"
+title: "TEST FOR AWS AMPLIFY!!!"
 author: Lindsey Bromberg
 date: 2018-02-28
 tags: [culture, engineering]
 ---
+
+Cool new content for aws amplify
 
 One year ago this month, Cerner development associates in Kansas City moved into a new place to call home for their workdays, Innovations Campus. The first two towers that stand on this campus provide 805,000 square feet of workspace for more than 3,000 associates. Eventually, the campus will grow larger, including 16 buildings and 16,000 Cerner associates. As that growth approaches, it is important to reflect on what these first two towers represent for associates and their development careers at Cerner. The investment in this workplace is a testament to Cerner’s dedication to and appreciation of associate values. It is a reflection of who the people at Cerner are and what they strive to be.
 
