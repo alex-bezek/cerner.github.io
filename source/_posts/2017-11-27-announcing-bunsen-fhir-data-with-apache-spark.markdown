@@ -24,19 +24,19 @@ Which prints a table like this:
 
 |person_id        |date_time    |value   |
 |:----------------|:------------|:-------|
-|Patient/123      |2016-12-27   |54.0000 
+|Patient/123      |2016-12-27   |54.0000
 |Patient/123      |2017-04-18   |60.0000
 
 Notice that each field in the above SQL is fully defined by the [FHIR Observation model](http://hl7.org/fhir/STU3/observation.html). This is because the table schemas are generated directly from FHIR resource definitions, ensuring these queries exactly match other FHIR-based views of the same data.
 
-Bunsen also provides a collection of helpful functions to make querying data easy. The above query includes the _in\_valueset_ user-defined function, allowing users to use code value sets directly in the query. You can see the [Bunsen value set documentation](http://engineering.cerner.com/bunsen/introduction.html#bring-your-own-value-sets) for details. 
+Bunsen also provides a collection of helpful functions to make querying data easy. The above query includes the _in\_valueset_ user-defined function, allowing users to use code value sets directly in the query. You can see the [Bunsen value set documentation](http://engineering.cerner.com/bunsen/introduction.html#bring-your-own-value-sets) for details.
 
 ### Scalability and Performance
 Because Bunsen encodes FHIR resources in Apache Spark's efficient binary format, we get all of Spark's scalability and performance advantages. Simple queries across billions of FHIR resources typically return in single-digit seconds in internal clusters. Arbitrary joins and aggregations of complex datasets scale with your Apache Spark cluster. We take advantage of Spark's built-in support for [Apache Parquet](https://parquet.apache.org/) to read and write FHIR with an efficient columnar data format that is readable by other systems as well.
 
 ### Sophisticated Queries
 Spark SQL offers rich query semantics that can now be used directly over FHIR data models. For instance,
-here is a query that builds a timeseries-like table directly from a collection of observations by simply 
+here is a query that builds a timeseries-like table directly from a collection of observations by simply
 grouping items by the person and time period. This is just standard Spark SQL wrapped around
 our simple valueset-based function.
 
@@ -45,28 +45,28 @@ select subject.reference patient_id,
        year(effectiveDateTime) obs_year,
        month(effectiveDateTime) obs_month,
 
-       avg(if(in_valueset(code, 'glucose_level'), 
-              valueQuantity.value, 
+       avg(if(in_valueset(code, 'glucose_level'),
+              valueQuantity.value,
               null)) avg_glucose_level,
-              
-       avg(if(in_valueset(code, 'bun'), 
-              valueQuantity.value, 
+
+       avg(if(in_valueset(code, 'bun'),
+              valueQuantity.value,
               null)) avg_bun
-                            
+
 from observations
-group by subject.reference, 
-         year(effectiveDateTime), 
+group by subject.reference,
+         year(effectiveDateTime),
          month(effectiveDateTime)
-order by patient_id, obs_year, obs_month 
+order by patient_id, obs_year, obs_month
 ```
 
-Typical queries may aggregate many other types of data and join to conditions, allergies, or other tables 
+Typical queries may aggregate many other types of data and join to conditions, allergies, or other tables
 to build a more complete report. All of this can be done interactively over billions of records.
 
 ### Java Usage
 Bunsen uses the [HAPI FHIR](http://hapifhir.io/) library to represent data in object form. Java users can convert their objects from the HAPI to Spark-native structures and back with a few lines of code. Here's an example:
 
-```java
+```
 FhirEncoders encoders = FhirEncoders.forStu3().getOrCreate();
 
 List<Condition> conditionList = // A list of org.hl7.fhir.dstu3.model.Condition objects.
